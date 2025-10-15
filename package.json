@@ -1,0 +1,33 @@
+{
+  "name": "habs-hostel-allotment-booking-system",
+  "version": "1.0.0",
+  "description": "AI-powered Hostel Allotment and Booking System with MapMyIndia integration and blockchain features",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm start",
+    "blockchain": "cd blockchain && npm run dev",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../blockchain && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "keywords": [
+    "hostel",
+    "booking",
+    "ai",
+    "blockchain",
+    "mapmyindia",
+    "student-accommodation"
+  ],
+  "author": "HABS Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "backend",
+    "frontend",
+    "blockchain"
+  ]
+}
