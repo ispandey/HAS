@@ -1,22 +1,26 @@
 import React from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Link, 
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Link,
+  Stack,
   IconButton,
-  Divider
+  Divider,
+  Chip,
+  Button
 } from '@mui/material';
-import { 
-  Facebook as FacebookIcon,
-  Twitter as TwitterIcon,
+import {
   Instagram as InstagramIcon,
+  Twitter as TwitterIcon,
   LinkedIn as LinkedInIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon
+  Facebook as FacebookIcon,
+  ArrowForward as ArrowForwardIcon
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
+
+const MotionBox = motion(Box);
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,212 +29,173 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        bgcolor: 'primary.dark',
-        color: 'white',
-        py: 4,
-        mt: 'auto'
+        position: 'relative',
+        mt: 12,
+        color: 'text.primary',
+        overflow: 'hidden'
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          {/* About Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              HABS
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 2, lineHeight: 1.6 }}>
-              AI-powered Hostel Allotment and Booking System helping students find 
-              the perfect accommodation near their universities across India.
-            </Typography>
-            <Box>
-              <IconButton color="inherit" size="small">
-                <FacebookIcon />
-              </IconButton>
-              <IconButton color="inherit" size="small">
-                <TwitterIcon />
-              </IconButton>
-              <IconButton color="inherit" size="small">
-                <InstagramIcon />
-              </IconButton>
-              <IconButton color="inherit" size="small">
-                <LinkedInIcon />
-              </IconButton>
-            </Box>
-          </Grid>
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(circle at top, rgba(124, 58, 237, 0.28), transparent 55%)',
+          pointerEvents: 'none'
+        }}
+      />
 
-          {/* Quick Links */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              Quick Links
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Link 
-                href="/" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Home
-              </Link>
-              <Link 
-                href="/search" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Find Hostels
-              </Link>
-              <Link 
-                href="/register" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Register
-              </Link>
-              <Link 
-                href="/login" 
-                color="inherit" 
-                sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Login
-              </Link>
-            </Box>
-          </Grid>
-
-          {/* For Students */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              For Students
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                How It Works
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Safety Guidelines
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                FAQs
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Support
-              </Link>
-            </Box>
-          </Grid>
-
-          {/* For Owners */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              For Owners
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                List Your Hostel
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Owner Guidelines
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Pricing
-              </Link>
-              <Link 
-                href="#" 
-                color="inherit" 
-                sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-              >
-                Resources
-              </Link>
-            </Box>
-          </Grid>
-
-          {/* Contact Info */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-              Contact Us
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <EmailIcon sx={{ fontSize: 18, mr: 1 }} />
-                <Typography variant="body2">
-                  support@habs.com
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <MotionBox
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          sx={{
+            borderRadius: 6,
+            px: { xs: 4, md: 10 },
+            py: { xs: 6, md: 10 },
+            backdropFilter: 'blur(22px)',
+            border: '1px solid rgba(148, 163, 184, 0.18)',
+            background: 'linear-gradient(125deg, rgba(9, 20, 40, 0.92) 10%, rgba(13, 33, 63, 0.62) 90%)',
+            boxShadow: '0 40px 100px rgba(15, 23, 42, 0.45)'
+          }}
+        >
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={5}>
+              <Stack spacing={2.5}>
+                <Chip
+                  label="AI x Blockchain Hostel Platform"
+                  variant="outlined"
+                  sx={{
+                    alignSelf: 'flex-start',
+                    borderColor: 'rgba(56, 189, 248, 0.4)',
+                    color: 'primary.light',
+                    backgroundColor: 'rgba(56, 189, 248, 0.08)'
+                  }}
+                />
+                <Typography variant="h4" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+                  Reimagining hostel discovery with immersive intelligence.
                 </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <PhoneIcon sx={{ fontSize: 18, mr: 1 }} />
-                <Typography variant="body2">
-                  +91 98765 43210
+                <Typography variant="body1" color="text.secondary">
+                  Discover curated stays, automate allotments, and verify every booking with tamper-proof ledgers. Unlock the smartest hostel ecosystem built for institutions, owners, and students alike.
                 </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                <LocationIcon sx={{ fontSize: 18, mr: 1, mt: 0.2 }} />
-                <Typography variant="body2">
-                  India
-                </Typography>
-              </Box>
-            </Box>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <Button
+                    component={Link}
+                    href="/register"
+                    variant="contained"
+                    endIcon={<ArrowForwardIcon />}
+                  >
+                    Get started
+                  </Button>
+                  <Button
+                    component={Link}
+                    href="/demo"
+                    variant="outlined"
+                    color="inherit"
+                  >
+                    Request a demo
+                  </Button>
+                </Stack>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={12} md={7}>
+              <Grid container spacing={4}>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                    Explore
+                  </Typography>
+                  <Stack spacing={1.2}>
+                    <Link href="/search" color="text.secondary" underline="hover">
+                      Find hostels
+                    </Link>
+                    <Link href="/how-it-works" color="text.secondary" underline="hover">
+                      How it works
+                    </Link>
+                    <Link href="/pricing" color="text.secondary" underline="hover">
+                      Pricing plans
+                    </Link>
+                    <Link href="/blog" color="text.secondary" underline="hover">
+                      Insights & updates
+                    </Link>
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                    For partners
+                  </Typography>
+                  <Stack spacing={1.2}>
+                    <Link href="/institutions" color="text.secondary" underline="hover">
+                      Institutions
+                    </Link>
+                    <Link href="/owners" color="text.secondary" underline="hover">
+                      Hostel owners
+                    </Link>
+                    <Link href="/integrations" color="text.secondary" underline="hover">
+                      API integrations
+                    </Link>
+                    <Link href="/security" color="text.secondary" underline="hover">
+                      Security
+                    </Link>
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                    Connect
+                  </Typography>
+                  <Stack spacing={1.2}>
+                    <Typography color="text.secondary">support@habs.ai</Typography>
+                    <Typography color="text.secondary">+91 98765 43210</Typography>
+                    <Stack direction="row" spacing={1}>
+                      {[FacebookIcon, TwitterIcon, InstagramIcon, LinkedInIcon].map((Icon, idx) => (
+                        <IconButton
+                          key={idx}
+                          size="small"
+                          sx={{
+                            color: 'text.secondary',
+                            borderRadius: 2,
+                            border: '1px solid rgba(148, 163, 184, 0.25)',
+                            '&:hover': {
+                              background: 'linear-gradient(135deg, rgba(124,58,237,0.15), rgba(34,211,238,0.18))',
+                              color: 'primary.light'
+                            }
+                          }}
+                        >
+                          <Icon fontSize="small" />
+                        </IconButton>
+                      ))}
+                    </Stack>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Divider sx={{ my: 3, bgcolor: 'rgba(255,255,255,0.2)' }} />
+          <Divider sx={{ my: { xs: 5, md: 8 }, borderColor: 'rgba(148, 163, 184, 0.18)' }} />
 
-        {/* Bottom Section */}
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="body2" sx={{ mb: { xs: 2, md: 0 } }}>
-            © {currentYear} HABS - Hostel Allotment and Booking System. All rights reserved.
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            <Link 
-              href="#" 
-              color="inherit" 
-              variant="body2"
-              sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-            >
-              Privacy Policy
-            </Link>
-            <Link 
-              href="#" 
-              color="inherit" 
-              variant="body2"
-              sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-            >
-              Terms of Service
-            </Link>
-            <Link 
-              href="#" 
-              color="inherit" 
-              variant="body2"
-              sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-            >
-              Cookie Policy
-            </Link>
-          </Box>
-        </Box>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={2}
+            justifyContent="space-between"
+            alignItems={{ xs: 'flex-start', md: 'center' }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              © {currentYear} HABS. Building intelligent and trusted hostel experiences across the globe.
+            </Typography>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <Link href="/privacy" color="text.secondary" underline="hover">
+                Privacy policy
+              </Link>
+              <Link href="/terms" color="text.secondary" underline="hover">
+                Terms of service
+              </Link>
+              <Link href="/status" color="text.secondary" underline="hover">
+                System status
+              </Link>
+            </Stack>
+          </Stack>
+        </MotionBox>
       </Container>
     </Box>
   );

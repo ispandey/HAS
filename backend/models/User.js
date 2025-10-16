@@ -56,8 +56,10 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Department'
     },
+    institutionName: String,
     course: String,
     year: Number,
+    yearLabel: String,
     studentId: String,
     preferences: {
       budgetRange: {
@@ -89,6 +91,7 @@ const userSchema = new mongoose.Schema({
   ownerProfile: {
     businessName: String,
     businessRegistration: String,
+    businessPhone: String,
     address: {
       street: String,
       city: String,
@@ -166,7 +169,6 @@ userSchema.methods.updateLoginInfo = function() {
 };
 
 // Indexes for better query performance
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ 'studentProfile.university': 1 });
 userSchema.index({ 'studentProfile.department': 1 });

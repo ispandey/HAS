@@ -1,98 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { GlobalStyles } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '@fontsource/plus-jakarta-sans/300.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/500.css';
+import '@fontsource/plus-jakarta-sans/600.css';
+import '@fontsource/plus-jakarta-sans/700.css';
 
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
-
-// Create Material-UI theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2196f3',
-      dark: '#1976d2',
-      light: '#64b5f6',
-    },
-    secondary: {
-      main: '#ff5722',
-      dark: '#d84315',
-      light: '#ff8a65',
-    },
-    background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
-    },
-    success: {
-      main: '#4caf50',
-    },
-    warning: {
-      main: '#ff9800',
-    },
-    error: {
-      main: '#f44336',
-    },
-  },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 500,
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 500,
-    },
-    h4: {
-      fontSize: '1.5rem',
-      fontWeight: 500,
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
-    },
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 500,
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 500,
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          borderRadius: 12,
-        },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        },
-      },
-    },
-  },
-});
+import theme from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -100,6 +23,51 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <GlobalStyles
+        styles={(theme) => ({
+          '*': {
+            boxSizing: 'border-box',
+          },
+          body: {
+            margin: 0,
+            minHeight: '100vh',
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+            scrollBehavior: 'smooth',
+          },
+          '#root': {
+            minHeight: '100vh',
+            position: 'relative',
+            zIndex: 1,
+          },
+          'body::before': {
+            content: '""',
+            position: 'fixed',
+            zIndex: 0,
+            inset: '-25%',
+            background:
+              'radial-gradient(40% 50% at 20% 15%, rgba(124, 58, 237, 0.35) 0%, transparent 70%),' +
+              'radial-gradient(45% 55% at 80% 10%, rgba(34, 211, 238, 0.28) 0%, transparent 72%),' +
+              'radial-gradient(50% 70% at 50% 85%, rgba(236, 72, 153, 0.22) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+            transform: 'translate3d(0, 0, 0)',
+            animation: 'pulseGradient 18s ease-in-out infinite',
+          },
+          '@keyframes pulseGradient': {
+            '0%': { transform: 'scale(1) translateY(0)' },
+            '50%': { transform: 'scale(1.05) translateY(-2%)' },
+            '100%': { transform: 'scale(1) translateY(0)' },
+          },
+          '::-webkit-scrollbar': {
+            width: '8px',
+            height: '8px',
+          },
+          '::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(148, 163, 184, 0.35)',
+            borderRadius: '999px',
+          },
+        })}
+      />
       <BrowserRouter>
         <AuthProvider>
           <SocketProvider>
@@ -114,7 +82,7 @@ root.render(
               pauseOnFocusLoss
               draggable
               pauseOnHover
-              theme="light"
+              theme="dark"
             />
           </SocketProvider>
         </AuthProvider>

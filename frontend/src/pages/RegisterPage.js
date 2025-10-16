@@ -28,7 +28,25 @@ import {
   VisibilityOff,
   PersonAdd as PersonAddIcon
 } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../context/AuthContext';
+
+const sanitizeString = (value) => (typeof value === 'string' ? value.trim() : '');
+
+const parseYearToNumber = (label) => {
+  if (typeof label !== 'string') return null;
+  const match = label.match(/\d+/);
+  if (match) {
+    return parseInt(match[0], 10);
+  }
+  switch (label) {
+    case 'Final Year':
+      return 4;
+    case 'Post Graduate':
+      return 5;
+    default:
+      return null;
+  }
+};
 
 const RegisterPage = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -88,8 +106,8 @@ const RegisterPage = () => {
           setError('Please enter a valid email address');
           return false;
         }
-        if (!/^\d{10}$/.test(formData.phone)) {
-          setError('Please enter a valid 10-digit phone number');
+        if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+          setError('Please enter a valid 10-digit Indian phone number');
           return false;
         }
         break;
@@ -118,6 +136,10 @@ const RegisterPage = () => {
             setError('Please fill in all business details');
             return false;
           }
+          if (!/^\d{10}$/.test(formData.businessPhone)) {
+            setError('Business phone must be a valid 10-digit number');
+            return false;
+          }
         }
         break;
       default:
@@ -135,7 +157,33 @@ const RegisterPage = () => {
     setError('');
 
     try {
-      await register(formData);
+      const payload = {
+        name: sanitizeString(formData.name),
+        email: sanitizeString(formData.email).toLowerCase(),
+        phone: sanitizeString(formData.phone),
+        password: formData.password,
+        role: formData.role
+      };
+
+      if (formData.role === 'student') {
+        payload.studentProfile = {
+          institutionName: sanitizeString(formData.university),
+          course: sanitizeString(formData.course),
+          yearLabel: formData.year,
+          year: parseYearToNumber(formData.year)
+        };
+      } else {
+        payload.ownerProfile = {
+          businessName: sanitizeString(formData.businessName),
+          businessPhone: sanitizeString(formData.businessPhone),
+          businessRegistration: sanitizeString(formData.licenseNumber) || undefined,
+          address: {
+            street: sanitizeString(formData.businessAddress)
+          }
+        };
+      }
+
+      await register(payload);
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

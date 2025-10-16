@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
+import { AnimatePresence } from 'framer-motion';
 
 // Context
 import { useAuth } from './context/AuthContext';
@@ -8,30 +9,17 @@ import { useAuth } from './context/AuthContext';
 // Layout Components
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import PageTransition from './components/common/PageTransition';
 
 // Public Pages
 import HomePage from './pages/HomePage';
-import SearchHostelsPage from './pages/SearchHostelsPage';
-import HostelDetailsPage from './pages/HostelDetailsPage';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
-// Student Pages
-import StudentDashboard from './pages/student/StudentDashboard';
-import StudentBookingsPage from './pages/student/StudentBookingsPage';
-import StudentProfilePage from './pages/student/StudentProfilePage';
-
-// Hostel Owner Pages
-import OwnerDashboard from './pages/owner/OwnerDashboard';
-import AddHostelPage from './pages/owner/AddHostelPage';
-import ManageHostelsPage from './pages/owner/ManageHostelsPage';
-import OwnerBookingsPage from './pages/owner/OwnerBookingsPage';
-
-// Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsersPage from './pages/admin/AdminUsersPage';
-import AdminHostelsPage from './pages/admin/AdminHostelsPage';
-import AdminBookingsPage from './pages/admin/AdminBookingsPage';
+// Dashboard Pages
+import AdminDashboard from './pages/dashboard/AdminDashboard';
+import StudentDashboard from './pages/dashboard/StudentDashboard';
+import OwnerDashboard from './pages/dashboard/OwnerDashboard';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -78,6 +66,7 @@ const PublicRoute = ({ children }) => {
 function App() {
   const { loading, checkAuthStatus } = useAuth();
   const [initializing, setInitializing] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -109,138 +98,86 @@ function App() {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
       
-      <Box component="main" sx={{ flexGrow: 1, mt: 8 }}>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchHostelsPage />} />
-          <Route path="/hostels/:id" element={<HostelDetailsPage />} />
-          
-          {/* Auth Routes */}
-          <Route 
-            path="/login" 
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            } 
-          />
-          <Route 
-            path="/register" 
-            element={
-              <PublicRoute>
-                <RegisterPage />
-              </PublicRoute>
-            } 
-          />
+      <Box component="main" sx={{ flexGrow: 1, mt: 10, px: { xs: 2, md: 3 } }}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            {/* Public Routes */}
+            <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
 
-          {/* Dashboard Route - Redirects based on role */}
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <DashboardRedirect />
-              </ProtectedRoute>
-            } 
-          />
+            {/* Auth Routes */}
+            <Route 
+              path="/login" 
+              element={
+                <PublicRoute>
+                  <PageTransition>
+                    <LoginPage />
+                  </PageTransition>
+                </PublicRoute>
+              } 
+            />
+            <Route 
+              path="/register" 
+              element={
+                <PublicRoute>
+                  <PageTransition>
+                    <RegisterPage />
+                  </PageTransition>
+                </PublicRoute>
+              } 
+            />
 
-          {/* Student Routes */}
-          <Route 
-            path="/student/dashboard" 
-            element={
-              <ProtectedRoute allowedRoles={['student']}>
-                <StudentDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/student/bookings" 
-            element={
-              <ProtectedRoute allowedRoles={['student']}>
-                <StudentBookingsPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/student/profile" 
-            element={
-              <ProtectedRoute allowedRoles={['student']}>
-                <StudentProfilePage />
-              </ProtectedRoute>
-            } 
-          />
+            {/* Dashboard Route - Redirects based on role */}
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <PageTransition>
+                    <DashboardRedirect />
+                  </PageTransition>
+                </ProtectedRoute>
+              } 
+            />
 
-          {/* Hostel Owner Routes */}
-          <Route 
-            path="/owner/dashboard" 
-            element={
-              <ProtectedRoute allowedRoles={['hostel_owner']}>
-                <OwnerDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/owner/add-hostel" 
-            element={
-              <ProtectedRoute allowedRoles={['hostel_owner']}>
-                <AddHostelPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/owner/hostels" 
-            element={
-              <ProtectedRoute allowedRoles={['hostel_owner']}>
-                <ManageHostelsPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/owner/bookings" 
-            element={
-              <ProtectedRoute allowedRoles={['hostel_owner']}>
-                <OwnerBookingsPage />
-              </ProtectedRoute>
-            } 
-          />
+            {/* Student Routes */}
+            <Route 
+              path="/student/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <PageTransition>
+                    <StudentDashboard />
+                  </PageTransition>
+                </ProtectedRoute>
+              } 
+            />
 
-          {/* Admin Routes */}
-          <Route 
-            path="/admin/dashboard" 
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/users" 
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminUsersPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/hostels" 
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminHostelsPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/bookings" 
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminBookingsPage />
-              </ProtectedRoute>
-            } 
-          />
+            {/* Hostel Owner Routes */}
+            <Route 
+              path="/owner/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['hostel_owner']}>
+                  <PageTransition>
+                    <OwnerDashboard />
+                  </PageTransition>
+                </ProtectedRoute>
+              } 
+            />
 
-          {/* 404 Route */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <PageTransition>
+                    <AdminDashboard />
+                  </PageTransition>
+                </ProtectedRoute>
+              } 
+            />
+
+            {/* 404 Route */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </AnimatePresence>
       </Box>
 
       <Footer />

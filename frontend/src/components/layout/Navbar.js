@@ -1,36 +1,67 @@
-import React, { useState } from 'react';
-import { 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  Button, 
-  Box, 
-  IconButton, 
-  Menu, 
+import React, { useMemo, useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+  Menu,
   MenuItem,
   Avatar,
   Badge,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Divider
 } from '@mui/material';
-import { 
-  Home as HomeIcon,
+import {
   Search as SearchIcon,
   Notifications as NotificationsIcon,
-  AccountCircle as AccountIcon,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  AddCircle as AddCircleIcon,
+  DashboardCustomize as DashboardIcon
 } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+
+const MotionBox = motion(Box);
+
+const baseLinks = [
+  {
+    label: 'Find Hostels',
+    to: '/search',
+    icon: <SearchIcon fontSize="small" />
+  }
+];
+
+const roleBasedLinks = {
+  student: [
+    { label: 'My Bookings', to: '/student/bookings' }
+  ],
+  hostel_owner: [
+    { label: 'My Hostels', to: '/owner/hostels' },
+    { label: 'Add Hostel', to: '/owner/add-hostel', icon: <AddCircleIcon fontSize="small" /> }
+  ],
+  admin: [
+    { label: 'Manage Hostels', to: '/admin/hostels' },
+    { label: 'Manage Users', to: '/admin/users' }
+  ]
+};
 
 const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
-  
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLinks = useMemo(() => {
+    if (!isAuthenticated || !user?.role) return baseLinks;
+    return [...baseLinks, ...(roleBasedLinks[user.role] || [])];
+  }, [isAuthenticated, user?.role]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,17 +85,27 @@ const Navbar = () => {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
+      PaperProps={{
+        sx: {
+          mt: 1,
+          px: 1,
+          py: 0.5,
+          borderRadius: 3,
+          minWidth: 180,
+          bgcolor: theme.palette.background.paper,
+        }
+      }}
     >
       <MenuItem onClick={() => { navigate('/dashboard'); handleMenuClose(); }}>
-        Dashboard
+        <DashboardIcon fontSize="small" sx={{ mr: 1 }} /> Dashboard
       </MenuItem>
       <MenuItem onClick={() => { navigate('/student/profile'); handleMenuClose(); }}>
         Profile
       </MenuItem>
+      <Divider sx={{ my: 0.5, borderColor: 'rgba(148,163,184,0.2)' }} />
       <MenuItem onClick={handleLogout}>
         Logout
       </MenuItem>
@@ -72,199 +113,195 @@ const Navbar = () => {
   );
 
   return (
-    <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
-      <Toolbar>
-        {/* Logo and Brand */}
-        <Box 
-          component={Link} 
-          to="/" 
-          sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            textDecoration: 'none', 
-            color: 'inherit',
-            mr: 4
+    <AppBar position="fixed" color="transparent" elevation={0} sx={{ px: { xs: 2, md: 4 }, py: 2 }}>
+      <Toolbar
+        sx={{
+          width: '100%',
+          mx: 'auto',
+          borderRadius: 999,
+          px: { xs: 2, md: 3.5 },
+          py: 1,
+          backgroundColor: 'rgba(8, 15, 30, 0.75)',
+          border: '1px solid rgba(148, 163, 184, 0.15)',
+          backdropFilter: 'blur(18px)',
+          gap: 2
+        }}
+      >
+        <MotionBox
+          component={Link}
+          to="/"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none'
           }}
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <HomeIcon sx={{ mr: 1 }} />
-          <Typography 
-            variant="h6" 
-            component="div" 
-            sx={{ 
-              fontWeight: 'bold',
-              fontSize: { xs: '1.1rem', md: '1.25rem' }
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #7C3AED 0%, #22D3EE 100%)',
+              display: 'grid',
+              placeItems: 'center',
+              mr: 1.5
             }}
           >
-            HABS
-          </Typography>
-        </Box>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>H</Typography>
+          </Box>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1 }}>HABS</Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary', letterSpacing: '0.1em' }}>
+              HOSTEL INTELLIGENCE
+            </Typography>
+          </Box>
+        </MotionBox>
 
-        {/* Navigation Links - Desktop */}
         {!isMobile && (
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <Button 
-              color="inherit" 
-              component={Link} 
-              to="/search"
-              startIcon={<SearchIcon />}
-            >
-              Find Hostels
-            </Button>
-            
-            {isAuthenticated && user?.role === 'student' && (
-              <>
-                <Button color="inherit" component={Link} to="/student/bookings">
-                  My Bookings
-                </Button>
-              </>
-            )}
-
-            {isAuthenticated && user?.role === 'hostel_owner' && (
-              <>
-                <Button color="inherit" component={Link} to="/owner/hostels">
-                  My Hostels
-                </Button>
-                <Button color="inherit" component={Link} to="/owner/add-hostel">
-                  Add Hostel
-                </Button>
-              </>
-            )}
-
-            {isAuthenticated && user?.role === 'admin' && (
-              <>
-                <Button color="inherit" component={Link} to="/admin/hostels">
-                  Manage Hostels
-                </Button>
-                <Button color="inherit" component={Link} to="/admin/users">
-                  Manage Users
-                </Button>
-              </>
-            )}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexGrow: 1 }}>
+            {navLinks.map((link) => (
+              <Button
+                key={link.to}
+                component={Link}
+                to={link.to}
+                startIcon={link.icon}
+                sx={{
+                  color: 'text.secondary',
+                  '&:hover': {
+                    color: 'text.primary',
+                    backgroundColor: 'rgba(124, 58, 237, 0.14)'
+                  }
+                }}
+              >
+                {link.label}
+              </Button>
+            ))}
           </Box>
         )}
 
-        {/* Mobile Menu Button */}
         {isMobile && (
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton
-              color="inherit"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+          <Box sx={{ ml: 'auto' }}>
+            <IconButton color="primary" onClick={() => setMobileMenuOpen((prev) => !prev)}>
               <MenuIcon />
             </IconButton>
           </Box>
         )}
 
-        {/* User Actions - Desktop */}
         {!isMobile && (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {isAuthenticated ? (
               <>
-                {/* Notifications */}
-                <IconButton color="inherit">
-                  <Badge badgeContent={3} color="error">
+                <IconButton color="primary" sx={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  <Badge badgeContent={3} color="error" overlap="circular">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-
-                {/* Profile Menu */}
-                <IconButton
-                  edge="end"
-                  color="inherit"
-                  onClick={handleProfileMenuOpen}
-                >
+                <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0 }}>
                   {user?.profileImage ? (
-                    <Avatar 
-                      src={user.profileImage} 
-                      sx={{ width: 32, height: 32 }}
-                    />
+                    <Avatar src={user.profileImage} sx={{ width: 36, height: 36 }} />
                   ) : (
-                    <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
+                    <Avatar
+                      sx={{
+                        width: 36,
+                        height: 36,
+                        backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #7C3AED 100%)',
+                        fontWeight: 600
+                      }}
+                    >
                       {user?.name?.[0]?.toUpperCase()}
                     </Avatar>
                   )}
                 </IconButton>
               </>
             ) : (
-              <>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Button color="inherit" onClick={handleLogin}>
                   Login
                 </Button>
-                <Button 
-                  variant="outlined" 
-                  color="inherit" 
-                  component={Link} 
-                  to="/register"
-                  sx={{ ml: 1 }}
-                >
-                  Register
+                <Button variant="contained" color="primary" component={Link} to="/register">
+                  Join the Platform
                 </Button>
-              </>
+              </Box>
             )}
           </Box>
         )}
       </Toolbar>
 
-      {/* Mobile Menu */}
       {isMobile && mobileMenuOpen && (
-        <Box sx={{ bgcolor: 'primary.dark', p: 2 }}>
-          <Button 
-            color="inherit" 
-            component={Link} 
-            to="/search"
-            fullWidth
-            sx={{ justifyContent: 'flex-start', mb: 1 }}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Find Hostels
-          </Button>
-          
+        <MotionBox
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.3 }}
+          sx={{
+            backgroundColor: 'rgba(8, 15, 30, 0.92)',
+            borderRadius: 3,
+            border: '1px solid rgba(148, 163, 184, 0.2)',
+            mx: 2,
+            mt: 1,
+            p: 2,
+            display: 'grid',
+            gap: 1
+          }}
+        >
+          {navLinks.map((link) => (
+            <Button
+              key={link.to}
+              component={Link}
+              to={link.to}
+              fullWidth
+              onClick={() => setMobileMenuOpen(false)}
+              sx={{ justifyContent: 'flex-start', color: 'text.primary' }}
+              startIcon={link.icon}
+            >
+              {link.label}
+            </Button>
+          ))}
+
+          <Divider sx={{ borderColor: 'rgba(148,163,184,0.2)', my: 1.5 }} />
+
           {isAuthenticated ? (
             <>
-              <Button 
-                color="inherit" 
-                component={Link} 
+              <Button
+                component={Link}
                 to="/dashboard"
                 fullWidth
-                sx={{ justifyContent: 'flex-start', mb: 1 }}
                 onClick={() => setMobileMenuOpen(false)}
+                sx={{ justifyContent: 'flex-start', color: 'text.primary' }}
               >
                 Dashboard
               </Button>
-              <Button 
-                color="inherit" 
-                onClick={handleLogout}
-                fullWidth
-                sx={{ justifyContent: 'flex-start' }}
-              >
+              <Button onClick={handleLogout} fullWidth sx={{ justifyContent: 'flex-start' }}>
                 Logout
               </Button>
             </>
           ) : (
             <>
-              <Button 
-                color="inherit" 
-                component={Link} 
+              <Button
+                component={Link}
                 to="/login"
                 fullWidth
-                sx={{ justifyContent: 'flex-start', mb: 1 }}
                 onClick={() => setMobileMenuOpen(false)}
+                sx={{ justifyContent: 'flex-start' }}
               >
                 Login
               </Button>
-              <Button 
-                color="inherit" 
-                component={Link} 
+              <Button
+                component={Link}
                 to="/register"
                 fullWidth
-                sx={{ justifyContent: 'flex-start' }}
+                variant="contained"
                 onClick={() => setMobileMenuOpen(false)}
+                sx={{ justifyContent: 'center', mt: 0.5 }}
               >
-                Register
+                Create Account
               </Button>
             </>
           )}
-        </Box>
+        </MotionBox>
       )}
 
       {renderProfileMenu}

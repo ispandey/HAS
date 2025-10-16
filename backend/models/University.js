@@ -280,23 +280,21 @@ const departmentSchema = new mongoose.Schema({
 });
 
 // Indexes for better performance
-universitySchema.index({ name: 1 });
 universitySchema.index({ 'location.city': 1 });
 universitySchema.index({ 'location.state': 1 });
 universitySchema.index({ 'location.coordinates': '2dsphere' });
 
-collegeSchema.index({ name: 1 });
 collegeSchema.index({ university: 1 });
+collegeSchema.index({ university: 1, name: 1 }, { unique: true });
 collegeSchema.index({ 'location.coordinates': '2dsphere' });
 
-departmentSchema.index({ name: 1 });
 departmentSchema.index({ college: 1 });
 departmentSchema.index({ university: 1 });
 departmentSchema.index({ category: 1 });
 departmentSchema.index({ 'location.coordinates': '2dsphere' });
 
 // Compound indexes
-departmentSchema.index({ university: 1, college: 1, name: 1 });
+departmentSchema.index({ university: 1, college: 1, name: 1 }, { unique: true });
 
 module.exports = {
   University: mongoose.model('University', universitySchema),

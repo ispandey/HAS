@@ -23,6 +23,7 @@
   "author": "HABS Team",
   "license": "MIT",
   "devDependencies": {
+    "ajv": "^8.17.1",
     "concurrently": "^8.2.2"
   },
   "workspaces": [

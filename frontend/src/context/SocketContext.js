@@ -17,7 +17,7 @@ export const SocketProvider = ({ children }) => {
 
     if (isAuthenticated && user && token) {
       // Initialize socket connection
-      socketInstance = io(process.env.REACT_APP_API_URL || 'http://localhost:5000', {
+      socketInstance = io(process.env.REACT_APP_API_URL || 'http://localhost:5001', {
         auth: {
           token: token
         },

@@ -20,7 +20,7 @@ import {
   VisibilityOff,
   Person as PersonIcon
 } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -48,7 +48,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      await login(formData.email, formData.password);
+      await login({ email: formData.email, password: formData.password });
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
@@ -86,7 +86,7 @@ const LoginPage = () => {
     }
 
     try {
-      await login(demoCredentials.email, demoCredentials.password);
+  await login({ email: demoCredentials.email, password: demoCredentials.password });
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Demo login failed. Please try again.');

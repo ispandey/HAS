@@ -8,6 +8,12 @@ const { auth } = require('../middleware/auth');
 const router = express.Router();
 
 // Validation middleware
+const sanitizeString = (value) => {
+  if (typeof value !== 'string') return undefined;
+  const trimmed = value.trim();
+  return trimmed.length ? trimmed : undefined;
+};
+
 const validateRegistration = [
   body('name')
     .trim()
@@ -26,7 +32,37 @@ const validateRegistration = [
   body('phone')
     .optional()
     .matches(/^[6-9]\d{9}$/)
-    .withMessage('Please provide a valid Indian phone number')
+    .withMessage('Please provide a valid Indian phone number'),
+  body('studentProfile.institutionName')
+    .if(body('role').equals('student'))
+    .trim()
+    .notEmpty()
+    .withMessage('University or college name is required for students'),
+  body('studentProfile.course')
+    .if(body('role').equals('student'))
+    .trim()
+    .notEmpty()
+    .withMessage('Course information is required for students'),
+  body('studentProfile.yearLabel')
+    .if(body('role').equals('student'))
+    .trim()
+    .notEmpty()
+    .withMessage('Year of study is required for students'),
+  body('ownerProfile.businessName')
+    .if(body('role').equals('hostel_owner'))
+    .trim()
+    .notEmpty()
+    .withMessage('Business name is required for hostel owners'),
+  body('ownerProfile.address.street')
+    .if(body('role').equals('hostel_owner'))
+    .trim()
+    .notEmpty()
+    .withMessage('Business address is required for hostel owners'),
+  body('ownerProfile.businessPhone')
+    .if(body('role').equals('hostel_owner'))
+    .trim()
+    .matches(/^\d{10}$/)
+    .withMessage('Business phone must be a valid 10-digit number')
 ];
 
 const validateLogin = [
@@ -65,10 +101,18 @@ router.post('/register', validateRegistration, async (req, res) => {
       });
     }
 
-    const { name, email, password, role, phone } = req.body;
+    const { name, email, password, role, phone, studentProfile, ownerProfile } = req.body;
+
+    const normalizedEmail = sanitizeString(email)?.toLowerCase();
+
+    if (!normalizedEmail) {
+      return res.status(400).json({
+        message: 'A valid email is required'
+      });
+    }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({
         message: 'User already exists with this email'
@@ -77,11 +121,11 @@ router.post('/register', validateRegistration, async (req, res) => {
 
     // Create new user
     const userData = {
-      name,
-      email,
+      name: sanitizeString(name),
+      email: normalizedEmail,
       password,
       role,
-      phone
+      phone: sanitizeString(phone)
     };
 
     // Initialize profile based on role
@@ -93,12 +137,26 @@ router.post('/register', validateRegistration, async (req, res) => {
           facilities: [],
           hostelType: 'any',
           maxDistance: 10
-        }
+        },
+        institutionName: sanitizeString(studentProfile?.institutionName),
+        course: sanitizeString(studentProfile?.course),
+        yearLabel: sanitizeString(studentProfile?.yearLabel),
+        year: typeof studentProfile?.year === 'number' ? studentProfile.year : undefined
       };
     } else if (role === 'hostel_owner') {
       userData.ownerProfile = {
         isApproved: false,
-        totalHostels: 0
+        totalHostels: 0,
+        businessName: sanitizeString(ownerProfile?.businessName),
+        businessRegistration: sanitizeString(ownerProfile?.businessRegistration),
+        businessPhone: sanitizeString(ownerProfile?.businessPhone),
+        address: {
+          street: sanitizeString(ownerProfile?.address?.street),
+          city: sanitizeString(ownerProfile?.address?.city),
+          state: sanitizeString(ownerProfile?.address?.state),
+          pincode: sanitizeString(ownerProfile?.address?.pincode),
+          country: sanitizeString(ownerProfile?.address?.country) || 'India'
+        }
       };
     }
 

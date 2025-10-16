@@ -38,7 +38,7 @@ const universitiesData = [
       }
     },
     contact: {
-      phone: '9415350015',
+      phone: '9876543210',
       email: 'info@bhu.ac.in',
       website: 'https://www.bhu.ac.in'
     },
@@ -72,7 +72,7 @@ const universitiesData = [
       }
     },
     contact: {
-      phone: '9111127667525',
+      phone: '9876543211',
       email: 'info@du.ac.in',
       website: 'https://www.du.ac.in'
     },
@@ -106,7 +106,7 @@ const universitiesData = [
       }
     },
     contact: {
-      phone: '9122257774468',
+      phone: '9876543212',
       email: 'info@iitb.ac.in',
       website: 'https://www.iitb.ac.in'
     },
@@ -140,7 +140,7 @@ const universitiesData = [
       }
     },
     contact: {
-      phone: '9133223502111',
+      phone: '9876543213',
       email: 'info@caluniv.ac.in',
       website: 'https://www.caluniv.ac.in'
     },
@@ -174,7 +174,7 @@ const universitiesData = [
       }
     },
     contact: {
-      phone: '9144228445711',
+      phone: '9876543214',
       email: 'info@unom.ac.in',
       website: 'https://www.unom.ac.in'
     },
@@ -486,6 +486,24 @@ const hostelsData = [
       pricePerMonth: 2500,
       timings: { breakfast: '7:00-9:00', lunch: '12:00-2:00', dinner: '7:00-9:00' }
     },
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Premium single room with natural light and study setup',
+        category: 'room',
+        isPrimary: true
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Collaborative lounge for group study',
+        category: 'common_area'
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1522156373667-4c7234bbd804?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Nutritious meals served in the dining hall',
+        category: 'mess'
+      }
+    ],
     status: 'approved'
   },
   {
@@ -510,6 +528,24 @@ const hostelsData = [
     ],
     facilities: ['wifi', 'mess', 'laundry', 'security', 'power_backup', 'gym', 'medical'],
     mess: { available: true, type: 'veg', pricePerMonth: 2200 },
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Sunlit twin sharing room designed for focus',
+        category: 'room',
+        isPrimary: true
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1551298370-9d8a5c1bb6d3?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Secure entrance with biometric access',
+        category: 'exterior'
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Cozy lounge space for weekend downtime',
+        category: 'common_area'
+      }
+    ],
     status: 'approved'
   },
   
@@ -536,6 +572,24 @@ const hostelsData = [
     ],
     facilities: ['wifi', 'mess', 'laundry', 'security', 'power_backup', 'parking', 'gym'],
     mess: { available: true, type: 'both', pricePerMonth: 4000 },
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1652878645809-2189bec20d0d?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Premium air-conditioned dormitory',
+        category: 'room',
+        isPrimary: true
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Collaborative work pods and reading corners',
+        category: 'common_area'
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1512914890250-353c97aa1133?auto=format&fit=crop&w=1200&q=80',
+        caption: 'On-site fitness studio for residents',
+        category: 'facilities'
+      }
+    ],
     status: 'approved'
   },
   {
@@ -559,6 +613,24 @@ const hostelsData = [
     ],
     facilities: ['wifi', 'mess', 'laundry', 'security', 'power_backup'],
     mess: { available: true, type: 'both', pricePerMonth: 3000 },
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1522156373667-4c7234bbd804?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Fresh meals prepared in hygienic kitchen',
+        category: 'mess',
+        isPrimary: true
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Comfortable triple occupancy rooms',
+        category: 'room'
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Student lounge with reading nook',
+        category: 'common_area'
+      }
+    ],
     status: 'approved'
   },
   
@@ -585,9 +657,36 @@ const hostelsData = [
     ],
     facilities: ['wifi', 'mess', 'laundry', 'gym', 'parking', 'security', 'power_backup', 'common_room', 'library'],
     mess: { available: true, type: 'both', pricePerMonth: 5000 },
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Designer single occupancy suite',
+        category: 'room',
+        isPrimary: true
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Serene outdoor courtyard for gatherings',
+        category: 'exterior'
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1512914890250-353c97aa1133?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Fully equipped fitness studio',
+        category: 'facilities'
+      }
+    ],
     status: 'approved'
   }
 ];
+
+const hashUserPasswords = async (users) => {
+  return Promise.all(
+    users.map(async (user) => ({
+      ...user,
+      password: await bcrypt.hash(user.password, 12)
+    }))
+  );
+};
 
 // Seed function
 const seedDatabase = async () => {
@@ -628,8 +727,8 @@ const seedDatabase = async () => {
     // Create departments
     console.log('Creating departments...');
     const departmentsWithIds = departmentsData.map((dept, index) => {
-      const collegeIndex = Math.floor(index / 2); // 2 departments per college
-      const college = createdColleges[collegeIndex];
+      // Ensure we don't reference undefined colleges
+      const college = createdColleges[index % createdColleges.length];
       return {
         ...dept,
         college: college._id,
@@ -647,8 +746,9 @@ const seedDatabase = async () => {
     console.log(`Created ${createdDepartments.length} departments`);
     
     // Create hostel owners
-    console.log('Creating hostel owners...');
-    const createdOwners = await User.insertMany(hostelOwnersData);
+  console.log('Creating hostel owners...');
+  const ownersWithHashedPasswords = await hashUserPasswords(hostelOwnersData);
+  const createdOwners = await User.insertMany(ownersWithHashedPasswords);
     console.log(`Created ${createdOwners.length} hostel owners`);
     
     // Create hostels
@@ -724,7 +824,8 @@ const seedDatabase = async () => {
       }
     ];
     
-    const createdStudents = await User.insertMany(sampleStudents);
+  const studentsWithHashedPasswords = await hashUserPasswords(sampleStudents);
+  const createdStudents = await User.insertMany(studentsWithHashedPasswords);
     console.log(`Created ${createdStudents.length} sample students`);
     
     console.log('Database seeding completed successfully!');
